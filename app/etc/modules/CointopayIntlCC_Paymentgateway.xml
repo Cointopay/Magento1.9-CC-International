@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <CointopayIntlCC_Paymentgateway>
+            <active>true</active>
+            <codePool>local</codePool>
+        </CointopayIntlCC_Paymentgateway>
+    </modules>
+</config>
