@@ -100,8 +100,8 @@ class CointopayIntlCC_Paymentgateway_Model_Observer
         $this->coinId =  Mage::getSingleton('core/session')->getCoinid();
         if ($payment_method_code == 'cointopayintlccgateway') {
             $response = $this->sendCoins($lastOrderId);
-            Mage::getSingleton('core/session')->setCointopayresponse($response);
-            Mage::getSingleton('core/session')->setCoinresponse($response);
+            Mage::getSingleton('core/session')->setCointopayIntlCCresponse($response);
+            Mage::getSingleton('core/session')->setCoinIntlCCresponse($response);
             $orderresponse = @json_decode($response);
             $order->setExtOrderId($orderresponse->TransactionID);
             $order->save();

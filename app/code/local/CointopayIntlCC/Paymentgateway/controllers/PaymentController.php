@@ -11,8 +11,8 @@ class CointopayIntlCC_Paymentgateway_PaymentController extends Mage_Core_Control
 		$order = new Mage_Sales_Model_Order();
 		$orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
 		$order->loadByIncrementId($orderId);
-		$coinToPayResponse = Mage::getSingleton('core/session')->getCointopayresponse();
-		$coinsResponse = Mage::getSingleton('core/session')->getCoinresponse();
+		$coinToPayResponse = Mage::getSingleton('core/session')->getCointopayIntlCCresponse();
+		$coinsResponse = Mage::getSingleton('core/session')->getCoinIntlCCresponse();
 		$orderresponse = json_decode($coinsResponse);
 		if($order->getIncrementId()) {
 		$amount = number_format($orderresponse->OriginalAmount, 2);

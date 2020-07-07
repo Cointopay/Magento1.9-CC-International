@@ -38,7 +38,7 @@ class CointopayIntlCC_Paymentgateway_Model_Payment extends Mage_Payment_Model_Me
     public function toOptionArray()
     {
         $this->storeId = Mage::app()->getStore()->getStoreId();
-        $this->merchantId = Mage::getStoreConfig('payment/cointopaygateway/intl_cc_merchant_gateway_id', $this->storeId);
+        $this->merchantId = Mage::getStoreConfig('payment/cointopayintlccgateway/intl_cc_merchant_gateway_id', $this->storeId);
         if (isset($this->merchantId))
         {
             return $this->getSupportedCoins();

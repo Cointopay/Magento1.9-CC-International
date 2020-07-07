@@ -86,8 +86,8 @@
 $order = new Mage_Sales_Model_Order();
 $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
 $order->loadByIncrementId($orderId);
-$coinToPayResponse = Mage::getSingleton('core/session')->getCointopayresponse();
-$coinsResponse = Mage::getSingleton('core/session')->getCoinresponse();
+$coinToPayResponse = Mage::getSingleton('core/session')->getCointopayIntlCCresponse();
+$coinsResponse = Mage::getSingleton('core/session')->getCoinIntlCCresponse();
 $decoded = json_decode($coinsResponse);
 ?>
 <!-- <form name="cointopayintlccgateway" method="post" action="/checkout/onepage/success/">
@@ -134,7 +134,7 @@ $decoded = json_decode($coinsResponse);
 							<p class="trxid"><strong>Fiat Payment Details: </strong><?= $decoded->PaymentDetail ?></p>
 							<p class="description"> <a target="_blank" href="<?=  $decoded->RedirectURL ?>">View Invoice details</a></p>
 				            <?php /* <button class="action primary confirm_payments" id="confirm_payments">Confirm Payments</button> */ ?>
-				            <input type="hidden" id="cointopay_trid" value="<?= $decoded->TransactionID ?>" >
+				            <input type="hidden" id="cointopayintlcc_trid" value="<?= $decoded->TransactionID ?>" >
 			            </div>
 		          	</div>
                 <a class="action primary button" style="float: right;margin-top: 15px;" href="<?= $this->getBaseUrl() ?>">Continue Shopping</a>

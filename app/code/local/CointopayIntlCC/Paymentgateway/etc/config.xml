@@ -61,7 +61,7 @@
         <layout>
             <updates>
                 <cointopayintlccgateway>
-                    <file>cointopaygateway.xml</file>
+                    <file>cointopayintlccgateway.xml</file>
                 </cointopayintlccgateway>
             </updates>
         </layout>
