@@ -69,12 +69,12 @@ class CointopayIntlCC_Paymentgateway_Model_Observer
     /**
     * Merchant ID
     */
-    const XML_PATH_MERCHANT_ID = 'payment/cointopayintlccgateway/merchant_gateway_id';
+    const XML_PATH_MERCHANT_ID = 'payment/cointopayintlccgateway/intl_cc_merchant_gateway_id';
 
     /**
     * Merchant COINTOPAY SECURITY Key
     */
-    const XML_PATH_MERCHANT_SECURITY = 'payment/cointopayintlccgateway/merchant_gateway_security';
+    const XML_PATH_MERCHANT_SECURITY = 'payment/cointopayintlccgateway/intl_cc_merchant_gateway_security';
 
     /**
     * API URL
@@ -103,6 +103,9 @@ class CointopayIntlCC_Paymentgateway_Model_Observer
             Mage::getSingleton('core/session')->setCointopayIntlCCresponse($response);
             Mage::getSingleton('core/session')->setCoinIntlCCresponse($response);
             $orderresponse = @json_decode($response);
+			if(!isset($orderresponse->TransactionID) || $orderresponse->TransactionID == ''){
+				Mage::throwException($response);
+			}
             $order->setExtOrderId($orderresponse->TransactionID);
             $order->save();
         }
