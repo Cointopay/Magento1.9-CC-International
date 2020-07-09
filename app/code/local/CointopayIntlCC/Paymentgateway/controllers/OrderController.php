@@ -102,56 +102,31 @@ class CointopayIntlCC_Paymentgateway_OrderController extends Mage_Core_Controlle
             $notenough = $this->getRequest()->getParam('notenough');
             $this->storeId = Mage::app()->getStore()->getStoreId();
             $this->securityKey = trim(Mage::getStoreConfig(self::XML_PATH_MERCHANT_SECURITY, $this->storeId));
-			if ($this->securityKey == $SecurityCode) {
-				$order = Mage::getModel('sales/order')->loadByIncrementId($customerReferenceNr);
-				if (count($order->getData()) > 0) {
-					if ($status == 'paid' && $notenough == 1) {
-						$order->setState('pending_payment')->setStatus('pending_payment');
-						$order->save();
-					} else if ($status == 'paid') {
-						$order->setData('state', Mage_Sales_Model_Order::STATE_COMPLETE);
-						$order->setData('status', Mage_Sales_Model_Order::STATE_COMPLETE);
-						$order->save();
-					} else if ($status == 'failed') {
-						if ($order->getStatus() == 'complete') {
-							$this->getResponse()->setHeader('Content-type', 'application/json');
-							$this->getResponse()->setBody (
-								Mage::helper('core')->jsonEncode (
-									array (
-										'CustomerReferenceNr' => $customerReferenceNr,
-										'status' => 'error',
-										'message' => 'Order cannot be cancel now, because it is completed now.'
-									)
-								)
-							);
-							return;
-						} else {
-							$this->orderManagement->cancel($order->getId());
-						}
-					} else {
+			$order = Mage::getModel('sales/order')->loadByIncrementId($customerReferenceNr);
+			if (count($order->getData()) > 0) {
+				if ($status == 'paid' && $notenough == 1) {
+					$order->setState('pending_payment')->setStatus('pending_payment');
+					$order->save();
+				} else if ($status == 'paid') {
+					$order->setData('state', Mage_Sales_Model_Order::STATE_COMPLETE);
+					$order->setData('status', Mage_Sales_Model_Order::STATE_COMPLETE);
+					$order->save();
+				} else if ($status == 'failed') {
+					if ($order->getStatus() == 'complete') {
 						$this->getResponse()->setHeader('Content-type', 'application/json');
 						$this->getResponse()->setBody (
 							Mage::helper('core')->jsonEncode (
 								array (
 									'CustomerReferenceNr' => $customerReferenceNr,
 									'status' => 'error',
-									'message' => 'Order status should have valid value.'
+									'message' => 'Order cannot be cancel now, because it is completed now.'
 								)
 							)
 						);
 						return;
+					} else {
+						$this->orderManagement->cancel($order->getId());
 					}
-					$this->getResponse()->setHeader('Content-type', 'application/json');
-					$this->getResponse()->setBody (
-						Mage::helper('core')->jsonEncode (
-							array (
-								'CustomerReferenceNr' => $customerReferenceNr,
-								'status' => 'success',
-								'message' => 'Order status successfully updated.'
-							)
-						)
-					);
-					return;
 				} else {
 					$this->getResponse()->setHeader('Content-type', 'application/json');
 					$this->getResponse()->setBody (
@@ -159,12 +134,23 @@ class CointopayIntlCC_Paymentgateway_OrderController extends Mage_Core_Controlle
 							array (
 								'CustomerReferenceNr' => $customerReferenceNr,
 								'status' => 'error',
-								'message' => 'No order found.'
+								'message' => 'Order status should have valid value.'
 							)
 						)
 					);
 					return;
 				}
+				$this->getResponse()->setHeader('Content-type', 'application/json');
+				$this->getResponse()->setBody (
+					Mage::helper('core')->jsonEncode (
+						array (
+							'CustomerReferenceNr' => $customerReferenceNr,
+							'status' => 'success',
+							'message' => 'Order status successfully updated.'
+						)
+					)
+				);
+				return;
 			} else {
 				$this->getResponse()->setHeader('Content-type', 'application/json');
 				$this->getResponse()->setBody (
@@ -172,7 +158,7 @@ class CointopayIntlCC_Paymentgateway_OrderController extends Mage_Core_Controlle
 						array (
 							'CustomerReferenceNr' => $customerReferenceNr,
 							'status' => 'error',
-							'message' => 'Security key is not valid.'
+							'message' => 'No order found.'
 						)
 					)
 				);
